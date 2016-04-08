@@ -20,17 +20,12 @@ class MFRoundProgressView: UIView {
     private var startAngle: CGFloat = CGFloat(-90 * M_PI / 180)
     private var endAngle: CGFloat = CGFloat(270 * M_PI / 180)
     
-    override init() {
-        super.init()
-        backgroundColor = UIColor.clearColor()        
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.clearColor()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         backgroundColor = UIColor.clearColor()
     }
@@ -38,11 +33,10 @@ class MFRoundProgressView: UIView {
     
     override func drawRect(rect: CGRect) {
         // General Declarations
-        var context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()
         
         // Color Declarations
         let progressColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-        let backGroundColor = UIColor(red: 0.502, green: 0.502, blue: 0.502, alpha: 0.2)
         let progressBackgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.4)
         let titleColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
         
@@ -66,7 +60,7 @@ class MFRoundProgressView: UIView {
         
         let opaqueShadow = innerShadow.colorWithAlphaComponent(1)
         CGContextSetShadowWithColor(context, innerShadowOffset, innerShadowBlurRadius, opaqueShadow.CGColor)
-        CGContextSetBlendMode(context, kCGBlendModeSourceOut)
+        CGContextSetBlendMode(context, CGBlendMode.SourceOut)
         CGContextBeginTransparencyLayer(context, nil)
         
         opaqueShadow.setFill()
@@ -90,13 +84,13 @@ class MFRoundProgressView: UIView {
         progressPath.addArcWithCenter(CGPoint(x: CGRectGetMidX(progressRect), y: CGRectGetMidY(progressRect)), radius: CGRectGetWidth(progressRect) / 2, startAngle: startAngle, endAngle: (endAngle - startAngle) * (percent / 100) + startAngle, clockwise: true)
         progressColor.setStroke()
         progressPath.lineWidth = 4
-        progressPath.lineCapStyle = kCGLineCapRound
+        progressPath.lineCapStyle = CGLineCap.Round
         progressPath.stroke()
         
         // Text Drawing
         let textRect = CGRect(x: CGRectGetMinX(rect), y: CGRectGetMinY(rect), width: rect.size.width, height: rect.size.height)
         let textContent = NSString(string: "\(Int(percent))")
-        var textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as NSMutableParagraphStyle
+        let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
         textStyle.alignment = .Center
         
         let textFontAttributes = [
@@ -112,9 +106,7 @@ class MFRoundProgressView: UIView {
         CGContextRestoreGState(context);
         
     }
-    
-    
-    
+
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
