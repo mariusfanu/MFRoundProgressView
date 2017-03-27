@@ -17,23 +17,26 @@ class MFRoundProgressView: UIView {
             setNeedsDisplay()
         }
     }
-    private var startAngle: CGFloat = CGFloat(-90 * M_PI / 180)
-    private var endAngle: CGFloat = CGFloat(270 * M_PI / 180)
+    fileprivate var startAngle = CGFloat(-90 * Double.pi / 180)
+    fileprivate var endAngle = CGFloat(270 * Double.pi / 180)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
     }
 
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         // General Declarations
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {
+            print("Error getting context")
+            return
+        }
         
         // Color Declarations
         let progressColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
@@ -41,69 +44,69 @@ class MFRoundProgressView: UIView {
         let titleColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
         
         // Shadow Declarations
-        let innerShadow = UIColor.blackColor().colorWithAlphaComponent(0.22)
+        let innerShadow = UIColor.black.withAlphaComponent(0.22)
         let innerShadowOffset = CGSize(width: 3.1, height: 3.1)
         let innerShadowBlurRadius = CGFloat(4)
         
         // Background Drawing
-        let backgroundPath = UIBezierPath(ovalInRect: CGRect(x: CGRectGetMinX(rect), y: CGRectGetMinY(rect), width: rect.width, height: rect.height))
+        let backgroundPath = UIBezierPath(ovalIn: CGRect(x: rect.minX, y: rect.minY, width: rect.width, height: rect.height))
         backgroundColor?.setFill()
         backgroundPath.fill()
         
         // Background Inner Shadow
-        CGContextSaveGState(context);
+        context.saveGState();
         UIRectClip(backgroundPath.bounds);
-        CGContextSetShadowWithColor(context, CGSizeZero, 0, nil);
+        context.setShadow(offset: CGSize.zero, blur: 0, color: nil);
         
-        CGContextSetAlpha(context, CGColorGetAlpha(innerShadow.CGColor))
-        CGContextBeginTransparencyLayer(context, nil)
+        context.setAlpha(innerShadow.cgColor.alpha)
+        context.beginTransparencyLayer(auxiliaryInfo: nil)
         
-        let opaqueShadow = innerShadow.colorWithAlphaComponent(1)
-        CGContextSetShadowWithColor(context, innerShadowOffset, innerShadowBlurRadius, opaqueShadow.CGColor)
-        CGContextSetBlendMode(context, CGBlendMode.SourceOut)
-        CGContextBeginTransparencyLayer(context, nil)
+        let opaqueShadow = innerShadow.withAlphaComponent(1)
+        context.setShadow(offset: innerShadowOffset, blur: innerShadowBlurRadius, color: opaqueShadow.cgColor)
+        context.setBlendMode(CGBlendMode.sourceOut)
+        context.beginTransparencyLayer(auxiliaryInfo: nil)
         
         opaqueShadow.setFill()
         backgroundPath.fill()
-        CGContextEndTransparencyLayer(context);
+        context.endTransparencyLayer();
         
-        CGContextEndTransparencyLayer(context);
-        CGContextRestoreGState(context);
+        context.endTransparencyLayer();
+        context.restoreGState();
         
         // ProgressBackground Drawing
         let kMFPadding = CGFloat(15)
         
-        let progressBackgroundPath = UIBezierPath(ovalInRect: CGRect(x: CGRectGetMinX(rect) + kMFPadding/2, y: CGRectGetMinY(rect) + kMFPadding/2, width: rect.size.width - kMFPadding, height: rect.size.height - kMFPadding))
+        let progressBackgroundPath = UIBezierPath(ovalIn: CGRect(x: rect.minX + kMFPadding/2, y: rect.minY + kMFPadding/2, width: rect.size.width - kMFPadding, height: rect.size.height - kMFPadding))
         progressBackgroundColor.setStroke()
         progressBackgroundPath.lineWidth = 5
         progressBackgroundPath.stroke()
         
         // Progress Drawing
-        let progressRect = CGRect(x: CGRectGetMinX(rect) + kMFPadding/2, y: CGRectGetMinY(rect) + kMFPadding/2, width: rect.size.width - kMFPadding, height: rect.size.height - kMFPadding)
+        let progressRect = CGRect(x: rect.minX + kMFPadding/2, y: rect.minY + kMFPadding/2, width: rect.size.width - kMFPadding, height: rect.size.height - kMFPadding)
         let progressPath = UIBezierPath()
-        progressPath.addArcWithCenter(CGPoint(x: CGRectGetMidX(progressRect), y: CGRectGetMidY(progressRect)), radius: CGRectGetWidth(progressRect) / 2, startAngle: startAngle, endAngle: (endAngle - startAngle) * (percent / 100) + startAngle, clockwise: true)
+        progressPath.addArc(withCenter: CGPoint(x: progressRect.midX, y: progressRect.midY), radius: progressRect.width / 2, startAngle: startAngle, endAngle: (endAngle - startAngle) * (percent / 100) + startAngle, clockwise: true)
         progressColor.setStroke()
         progressPath.lineWidth = 4
-        progressPath.lineCapStyle = CGLineCap.Round
+        progressPath.lineCapStyle = CGLineCap.round
         progressPath.stroke()
         
         // Text Drawing
-        let textRect = CGRect(x: CGRectGetMinX(rect), y: CGRectGetMinY(rect), width: rect.size.width, height: rect.size.height)
+        let textRect = CGRect(x: rect.minX, y: rect.minY, width: rect.size.width, height: rect.size.height)
         let textContent = NSString(string: "\(Int(percent))")
-        let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
-        textStyle.alignment = .Center
+        let textStyle = NSMutableParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
+        textStyle.alignment = .center
         
         let textFontAttributes = [
             NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: rect.width / 3)!,
             NSForegroundColorAttributeName: titleColor,
             NSParagraphStyleAttributeName: textStyle]
         
-        let textHeight = textContent.boundingRectWithSize(CGSize(width: textRect.width, height: textRect.height), options: .UsesLineFragmentOrigin, attributes: textFontAttributes, context: nil).height
+        let textHeight = textContent.boundingRect(with: CGSize(width: textRect.width, height: textRect.height), options: .usesLineFragmentOrigin, attributes: textFontAttributes, context: nil).height
         
-        CGContextSaveGState(context)
-        CGContextClipToRect(context, textRect)
-        textContent.drawInRect(CGRect(x: CGRectGetMinX(textRect), y: CGRectGetMinY(textRect) + (CGRectGetHeight(textRect) - textHeight) / 2, width: CGRectGetWidth(textRect), height: textHeight), withAttributes: textFontAttributes)
-        CGContextRestoreGState(context);
+        context.saveGState()
+        context.clip(to: textRect)
+        textContent.draw(in: CGRect(x: textRect.minX, y: textRect.minY + (textRect.height - textHeight) / 2, width: textRect.width, height: textHeight), withAttributes: textFontAttributes)
+        context.restoreGState();
         
     }
 

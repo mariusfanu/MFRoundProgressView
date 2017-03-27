@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func valueChanged(sender: UISlider) {
+    @IBAction func valueChanged(_ sender: UISlider) {
         roundProgressView.percent = CGFloat(sender.value)
     }
 
