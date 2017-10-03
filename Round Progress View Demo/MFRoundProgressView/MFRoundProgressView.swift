@@ -9,7 +9,6 @@
 import UIKit
 
 @IBDesignable
-
 class MFRoundProgressView: UIView {
     
     @IBInspectable var percent:CGFloat = 50.0 {
@@ -17,20 +16,23 @@ class MFRoundProgressView: UIView {
             setNeedsDisplay()
         }
     }
-    fileprivate var startAngle = CGFloat(-90 * Double.pi / 180)
-    fileprivate var endAngle = CGFloat(270 * Double.pi / 180)
+    private var startAngle = CGFloat(-90 * Double.pi / 180)
+    private var endAngle = CGFloat(270 * Double.pi / 180)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clear
+        setup()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        backgroundColor = UIColor.clear
+        setup()
+    }
+    
+    private func setup() {
+        backgroundColor = .clear
     }
 
-    
     override func draw(_ rect: CGRect) {
         // General Declarations
         guard let context = UIGraphicsGetCurrentContext() else {
@@ -97,9 +99,9 @@ class MFRoundProgressView: UIView {
         textStyle.alignment = .center
         
         let textFontAttributes = [
-            NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: rect.width / 3)!,
-            NSForegroundColorAttributeName: titleColor,
-            NSParagraphStyleAttributeName: textStyle]
+            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-Light", size: rect.width / 3)!,
+            NSAttributedStringKey.foregroundColor: titleColor,
+            NSAttributedStringKey.paragraphStyle: textStyle]
         
         let textHeight = textContent.boundingRect(with: CGSize(width: textRect.width, height: textRect.height), options: .usesLineFragmentOrigin, attributes: textFontAttributes, context: nil).height
         
@@ -107,15 +109,5 @@ class MFRoundProgressView: UIView {
         context.clip(to: textRect)
         textContent.draw(in: CGRect(x: textRect.minX, y: textRect.minY + (textRect.height - textHeight) / 2, width: textRect.width, height: textHeight), withAttributes: textFontAttributes)
         context.restoreGState();
-        
     }
-
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
-
 }

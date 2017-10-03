@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -15,25 +19,25 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="pX1-qR-3Hw">
-                                <rect key="frame" x="18" y="462" width="564" height="31"/>
+                                <rect key="frame" x="14" y="495.5" width="347" height="31"/>
                                 <connections>
                                     <action selector="valueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="bUf-W5-kED"/>
                                 </connections>
                             </slider>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ly1-JZ-EUX" customClass="MFRoundProgressView" customModule="Round_Progress_View_Demo" customModuleProvider="target">
-                                <rect key="frame" x="200" y="200" width="200" height="200"/>
-                                <color key="backgroundColor" red="0.29888757162569213" green="0.31121831958849977" blue="0.64457070709999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="87.5" y="233.5" width="200" height="200"/>
+                                <color key="backgroundColor" red="0.29888757162569213" green="0.31121831958849977" blue="0.64457070709999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="6nj-EW-uj5"/>
                                     <constraint firstAttribute="height" constant="200" id="oNN-1X-Si2"/>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.29194900138664698" green="0.31102434983031318" blue="0.64457070709999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.29194900138664698" green="0.31102434983031318" blue="0.64457070709999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="ly1-JZ-EUX" secondAttribute="centerX" id="Nh0-qf-X5A"/>
                             <constraint firstAttribute="centerY" secondItem="ly1-JZ-EUX" secondAttribute="centerY" id="Rda-oP-1Tr"/>
